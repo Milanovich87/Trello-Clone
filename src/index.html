@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parcel Template</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+  <link rel="stylesheet" href="./scss/app.scss">
+  <script src="./js/app.js" type="module"></script>
+
+</head>
+
+<body>
+  <container class="container">
+    <div class="header">
+      <div class="title">Trello</div>
+      <div class="clock">
+        <link rel="stylesheet" href="https://bootstraptema.ru/plugins/2015/bootstrap3/bootstrap.min.css" />
+        <script type="text/javascript" src="https://bootstraptema.ru/plugins/2015/x-tag/x-tag-core.min.js"></script>
+        <style>
+          x-clock {
+            color: rgb(255, 255, 255);
+            font-size: 48px;
+            text-shadow: rgb(204, 204, 204) 0px 1px 0px, rgb(201, 201, 201) 0px 2px 0px, rgb(187, 187, 187) 0px 3px 0px, rgb(185, 185, 185) 0px 4px 0px, rgb(170, 170, 170) 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 6px 1px, rgba(0, 0, 0, 0.1) 0px 0px 5px, rgba(0, 0, 0, 0.3) 0px 1px 3px, rgba(0, 0, 0, 0.15) 0px 3px 5px, rgba(0, 0, 0, 0.2) 0px 5px 10px, rgba(0, 0, 0, 0.2) 0px 10px 10px, rgba(0, 0, 0, 0.1) 0px 20px 20px;
+          }
+        </style>
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-6 col-lg-offset-3">
+              <div class="text-center">
+                <x-clock id="clock"></x-clock>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script>
+          xtag.register('x-clock', {
+            lifecycle: {
+              created: function () {
+                this.start();
+              }
+            },
+            methods: {
+              start: function () {
+                this.update();
+                this.xtag.interval = setInterval(this.update.bind(this), 1000);
+              },
+              stop: function () {
+                this.xtag.interval = clearInterval(this.xtag.interval);
+              },
+              update: function () {
+                this.textContent = new Date().toLocaleTimeString();
+              }
+            },
+            events: {
+              tap: function () {
+                if (this.xtag.interval) this.stop();
+                else this.start();
+              }
+            }
+          });
+        </script>
+      </div>
+    </div>
+
+    <main class="main">
+
+      <div class="todo__items">
+        <div class="block__title">
+          <div class="title">TODO:</div>
+          <div class="count" id="countTodo"></div>
+        </div>
+        <div class="block__todos" id="list" data-index="1">
+        </div>
+        <div class="button">
+          <button id="btn" type="button" class="btn btn-success fs-2">Add
+            todo</button>
+        </div>
+      </div>
+
+      <div class="inprogress">
+        <div class="block__title">
+          <div class="title">IN PROGRESS</div>
+          <div class="count" id="countInProgress">00</div>
+        </div>
+        <div class="block__todos" id="listProg">
+        </div>
+      </div>
+
+      <div class="done">
+        <div class="block__title">
+          <div class="title">DONE</div>
+          <div class="count" id="countDone">00</div>
+        </div>
+        <div class="block__todos" id="done">
+        </div>
+        <div class="button">
+          <button id="buttonClear" type="button" class="btn btn-danger fs-2">Delete all</button>
+        </div>
+      </div>
+    </main>
+  </container>
+
+  <!-- Готовая карточка -->
+  <template id="toDoTemplate">
+    <form class="todo {{color}}" id="{{id}}">
+      <div class="todo__info">
+        <div class="todo__title">{{contentTitle}}</div>
+        <div class="todo__description">{{contentText}}</div>
+      </div>
+      <div class="buttons">
+        <button type="button" class="card-edit btn btn-primary" data-role="edit" id="btnTaskEdit">EDIT</button>
+        <button type="button" class="btn btn-danger btn-sm" data-role="remove">DELETE</button>
+        <select data-role="status">
+          <option value="select" selected>select</option>
+          <option value="todo">TODO</option>
+          <option value="inProgress">IN PROGRESS</option>
+          <option value="done">DONE</option>
+        </select>
+      </div>
+      <div class="time">{{date}}</div>
+      <div class="user__name">{{contentUserName}}</div>
+      </а>
+  </template>
+
+  <!-- Редактируемая карточка -->
+
+  <div id="toDoTemplateEdit">
+    <form class="todo" action="" id="form">
+      <div class="todo__info">
+        <input type="text" class="content__title form-control me-2" id="contentTitle" required>
+        <input type="text" class="content__text form-control me-2" id="contentText" required>
+      </div>
+      <div class="buttons">
+        <button type="button" class="btn btn-primary btn-sm" id="cancel">Cansel</button>
+        <button type="submit" class="btn btn-danger btn-sm">Confirm</button>
+      </div>
+      <div class="users">
+        <select class="form-select" aria-label="Пример выбора по умолчанию" id="userName" required>
+          <option selected>User</option>
+
+        </select>
+      </div>
+    </form>
+  </div>
+  <!-- Редактируемая карточка Edit-->
+
+  <div id="toDoTemplateEdit2">
+    <form class="todo__edit" action="" id="formedit">
+      <div class="todo__info">
+        <input type="text" class="content__title edit" id="contentTitleEdit" required>
+        <input type="hidden" class="title-hidden">
+      </div>
+      <div class="todo__text">
+        <input type="text" class="text-textarea edit" id="contentTextEdit" required>
+      </div>
+      <div class="buttons">
+        <button type="button" class="btn btn-primary btn-sm" id="cancelEdit">Cansel</button>
+        <button type="submit" class="btn btn-danger btn-sm">Confirm</button>
+      </div>
+      <div class="users__edit">
+        <select class="form-select edit" aria-label="Пример выбора по умолчанию" id="userNameEdit" required>
+          <option selected>User</option>
+        </select>
+      </div>
+    </form>
+  </div>
+  <!-- Warning count -->
+  <div class="warning__count">
+    <div class="title">
+      <p>Warning!</p>
+    </div>
+    <div class="text">
+      <p>Прежде чемдобавить еще одно дело, выполните текущие задачи.</p>
+    </div>
+    <div class="buttons">
+      <button type="button" class="btn btn-danger" id="closeWarning">Confirm</button>
+    </div>
+  </div>
+
+  <!-- Warning delete All -->
+  <div class="warning__delete">
+    <div class="title">
+      <p>Warning!</p>
+    </div>
+    <div class="buttons">
+      <button type="button" class="btn btn-danger" id="btnCancel">Cancel</button>
+      <button type="button" class="btn btn-primary" id="btnConfirm">Confirm</button>
+    </div>
+  </div>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
